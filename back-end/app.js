@@ -3,12 +3,56 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const session = require('express-session');
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+var GitHubStrategy = require('passport-github').Strategy;
+const config = require('./config');
+
 var app = express();
 
+const helmet = require('helmet');
+app.use((helmet()));
+
+// Allow cross-origin.....
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  next();
+});
+// ==========PASSPORT FILES================
+app.use(session({
+  secret: 'passport is awesome.',
+  resave: false,
+  saveUninitialized: true,
+}));
+
+const passport = require('passport')
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new GitHubStrategy({
+  clientID: config.passport.clientID,
+  clientSecret: config.passport.clientSecret,
+  callbackURL: config.passport.callbackURL
+},
+  function(accessToken, refreshToken, profile, cb) {
+    console.log('Function ran');
+    console.log(profile);
+    return cb(null,profile);
+  }
+));
+// =========From passport.js===
+passport.serializeUser((user, cb)=>{
+  cb(null,user);
+})
+passport.deserializeUser((user,cb)=>{
+  cb(null,user)
+})
+//==============
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
