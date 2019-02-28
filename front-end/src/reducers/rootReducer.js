@@ -11,5 +11,4 @@ const rootReducer = combineReducers({
 // function that returns a piece of application/redux state
 // 4. Each value will be a single reducer (imported)
 
-
 export default rootReducer;
