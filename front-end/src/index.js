@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 
-
 // In order to wire up a redux React app we need the following:
 // 1. Provider component. THis comes from react-redux
 import { Provider } from 'react-redux';

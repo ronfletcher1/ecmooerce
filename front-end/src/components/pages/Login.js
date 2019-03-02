@@ -14,7 +14,6 @@ class Login extends Component{
             msg: "",
         }
     }
-
     componentWillReceiveProps(newProps){
         console.log(newProps);
         if(newProps.auth.msg === 'badPassword'){
@@ -31,7 +30,11 @@ class Login extends Component{
         }else if(newProps.auth.msg === 'loginSuccess'){
             this.props.history.push('/');
         }
- 
+
+    }
+
+    componentDidMount(){
+        
     }
 
     handleLogin = (event)=>{
@@ -48,11 +51,12 @@ class Login extends Component{
         return(
         <main>
             <SweetAlert
-            show={this.state.showAlert}
-            title="login error"
-            text={this.state.msg}
-            onConfirm={() => this.setState({showAlert: false})}
-            />
+                show={this.state.showAlert}
+                title="Login Error"
+                text={this.state.msg}
+                onConfirm={() => this.setState({ showAlert: false })}
+            />            
+
             <center>
             <div className="container">
                 <div className="z-depth-1 grey lighten-4 row login">
